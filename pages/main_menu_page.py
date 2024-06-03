@@ -16,9 +16,9 @@ class MainMenuPage(Page):
         ActionChains(context.driver).move_to_element(hover_element).perform()
 
         if language == 'russian':
-            self.click(*self.RUSSIAN_LANGUAGE)
+            self.wait_until_clickable_click(*self.RUSSIAN_LANGUAGE)
         else:
-            self.click(*self.ENGLISH_LANGUAGE)
+            self.wait_until_clickable_click(*self.ENGLISH_LANGUAGE)
         sleep(4)
 
     def verify_language(self, language):
