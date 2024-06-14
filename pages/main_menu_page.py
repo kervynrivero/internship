@@ -9,17 +9,25 @@ class MainMenuPage(Page):
     LANGUAGE_HEADER = (By.CSS_SELECTOR, "div[class='language-in-header _1']")
     RUSSIAN_LANGUAGE_HEADER = (By.CSS_SELECTOR, "div[lang='ru']")
     ENGLISH_LANGUAGE_HEADER = (By.CSS_SELECTOR, "div[lang='en']")
-
+    #mobile locators
+    LANGUAGE_HEADER_MOBILE = (By.CSS_SELECTOR, "div.wg-dropdown-1")
+    CHANGE_Languague = (By.CSS_SELECTOR,"#w-dropdown-list-0")
     def change_language(self, context, language):
 
-        hover_element = self.find_element(*self.LANGUAGE_HEADER)
-        ActionChains(context.driver).move_to_element(hover_element).perform()
+        if self.driver.is_mobile:
 
-        if language == 'russian':
-            self.wait_until_clickable_click(*self.RUSSIAN_LANGUAGE)
+            self.click(*self.LANGUAGE_HEADER_MOBILE)
+            self.click(*self.CHANGE_Languague)
+
         else:
-            self.wait_until_clickable_click(*self.ENGLISH_LANGUAGE)
-        sleep(4)
+            hover_element = self.find_element(*self.LANGUAGE_HEADER)
+            ActionChains(context.driver).move_to_element(hover_element).perform()
+
+            if language == 'russian':
+                self.wait_until_clickable_click(*self.RUSSIAN_LANGUAGE)
+            else:
+                self.wait_until_clickable_click(*self.ENGLISH_LANGUAGE)
+            sleep(4)
 
     def verify_language(self, language):
         if language == 'russian':

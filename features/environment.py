@@ -34,9 +34,10 @@ def browser_init(context, scenario_name):
 
 
 
-    driver_path = ChromeDriverManager().install()
-    service = Service(driver_path)
-    context.driver = webdriver.Chrome(service=service)
+    #driver_path = ChromeDriverManager().install()
+    #service = Service(driver_path)
+    #context.driver = webdriver.Chrome(service=service)
+    #context.driver.is_mobile = False
 
     ### BROWSERSTACK ###
     #Register for BrowserStack, then grab it from https://www.browserstack.com/accounts/settings
@@ -45,7 +46,6 @@ def browser_init(context, scenario_name):
     #url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
 
     #options = Options()
-
 
     #bstack_options = {
     #    "os": "Windows",
@@ -58,13 +58,31 @@ def browser_init(context, scenario_name):
     #context.driver = webdriver.Remote(command_executor=url, options=options)
 
 
+    mobile_emulation = {
+        "deviceName": "iPhone SE"  # You can use other device names as well
+    }
+    # Chrome options
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)
+    driver_path = ChromeDriverManager().install()
+    service = Service(driver_path)
+    context.driver = webdriver.Chrome(service=service, options=chrome_options)
+    context.driver.is_mobile = True
 
+
+    #options = webdriver.ChromeOptions()
+    #options.add_argument('headless')
+    #options.add_argument("--window-size=1920,1080")
+    #options.add_argument("--start-maximized")
+    #service = Service(ChromeDriverManager().install())
+    #context.driver = webdriver.Chrome(
+    #     options=options,
+    #     service=service
+    #)
 
     context.driver.maximize_window()
-
     context.driver.maximize_window()
     context.driver.implicitly_wait(4)
-
     context.app = Application(context.driver)
 
 
